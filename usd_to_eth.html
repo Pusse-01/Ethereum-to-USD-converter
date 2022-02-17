@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>USD to ETH converter</h1>
+
+<form>
+    <label for="usd">USD:</label><br>
+    <input type="text" id="usd" name="usd"><br>
+    
+  </form> 
+  <button onclick="var amount = converter()">Submit</button>
+  <li>The Ethereum price is <span id="amount"></span></li>
+
+</body>
+</html> 
+ 
+<script>
+    async function converter(){
+        var usd = document.getElementById('usd').value;
+        console.log(usd);  
+        let amount;
+        const uri = 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR';
+        const initDetails = {
+            method: 'get',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            mode: "cors"
+        }
+        let response = await fetch(uri, initDetails)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed with status ${reponse.status}`)
+            }
+            return response.json()
+        })
+        .then(data => {
+            var rate = data.USD;
+            amount = ((1/rate)*usd).toFixed(2);
+        })
+        .catch(error => console.log(error));
+        console.log(amount);
+        document.getElementById("amount").innerHTML = amount;
+        return amount;
+    }
+
+
+    </script>
